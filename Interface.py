@@ -12,13 +12,17 @@ from Calc import Calc
 from plots import FunctionPlots as fplt
 
 
-def Plot(a, b):
+def Plot(a, b, f):
     a = float(a.get())
     b = float(b.get())
-    p = fplt(c)
-    N = 100
-    p.plotf(a, b, N)
+    f(a, b)
     return
+
+# def Plotfp(a, b):
+#     a = float(a.get())
+#     b = float(b.get())
+#     p.plotfp(a, b)
+#     return
 
 def updateCalcFunction(event):
     s = event.widget.get()
@@ -30,6 +34,7 @@ def updateCalcFunction(event):
 root = tk.Tk()
 root.geometry('300x200+100+200')
 c = Calc(lambda x: x)
+p = fplt(c)
 
 flabel = tk.Label(root, text = "Enter function")
 fentry = tk.Entry(root)
@@ -40,8 +45,12 @@ a = tk.StringVar()
 b = tk.StringVar() 
 aentry = tk.Entry(root, textvariable = a)
 bentry = tk.Entry(root, textvariable = b)
-Plot = partial(Plot, a, b)
-fbutton = tk.Button(root, text = "plot", command = Plot)
+Plotf = partial(Plot, a, b, p.plotf)
+fbutton = tk.Button(root, text = "plot", command = Plotf)
+Plotfp = partial(Plot, a, b, p.plotfp)
+fpbutton = tk.Button(root, text = "plot derivative", command = Plotfp)
+PlotInt = partial(Plot, a, b, p.plotInt)
+intbutton = tk.Button(root, text = "plot integral", command = PlotInt)
 
 
 flabel.place(x = 5, y = 5)
@@ -51,6 +60,8 @@ aentry.place(x = 45, y = 45)
 bentry.place(x = 45, y = 65)
 tk.Label(root, text = "Xmax").place(x = 5, y = 65)
 fbutton.place(x = 180, y = 50)
+fpbutton.place(x = 10, y = 100)
+intbutton.place(x = 10, y = 130)
 
 
 

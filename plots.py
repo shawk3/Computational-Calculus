@@ -20,12 +20,17 @@ class FunctionPlots:
         
         
         
-    def plotf(self, a, b, N):
+    def plotf(self, a, b, N = 100):
         f = self.c.f
         self.newPlot(f, a, b, N)
         
-    def plotfp(self, a, b, N):
+    def plotfp(self, a, b, N = 100):
         f = self.c.fp
+        self.newPlot(f, a, b, N)
+        
+    def plotInt(self, a, b, N=100):
+        def f(x):
+            return self.c.trap(0,x,N)
         self.newPlot(f, a, b, N)
         
 if __name__ == '__main__':
@@ -33,3 +38,4 @@ if __name__ == '__main__':
     p = FunctionPlots(c)
     p.plotf(-2, 2, 100)
     p.plotfp(-2, 2, 100)
+    p.plotInt(-2, 2)

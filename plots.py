@@ -10,13 +10,16 @@ from Calc import Calc
 class FunctionPlots:
     def __init__(self, c):
         self.c = c
+        figure = plt.figure()
+        self.ax = figure.add_subplot(111)
         
         
     def newPlot(self, f, a, b, N):
         w = (b-a)/N
         X = [a + w*i for i in range(N+1)]
         Y = [f(x) for x in X]
-        plt.plot(X,Y)
+        self.ax.plot(X,Y)
+        plt.show(block = False)
         
         
         

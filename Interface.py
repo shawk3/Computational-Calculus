@@ -29,6 +29,9 @@ def updateCalcFunction(event):
     def f(x):
         return eval(s)
     c.f = f
+    
+def clear():
+    p.clearPlot()
 
 
 root = tk.Tk()
@@ -51,6 +54,7 @@ Plotfp = partial(Plot, a, b, p.plotfp)
 fpbutton = tk.Button(root, text = "plot derivative", command = Plotfp)
 PlotInt = partial(Plot, a, b, p.plotInt)
 intbutton = tk.Button(root, text = "plot integral", command = PlotInt)
+clearbutton = tk.Button(root, text = "Clear", command = clear)
 
 
 flabel.place(x = 5, y = 5)
@@ -62,6 +66,7 @@ tk.Label(root, text = "Xmax").place(x = 5, y = 65)
 fbutton.place(x = 180, y = 50)
 fpbutton.place(x = 10, y = 100)
 intbutton.place(x = 10, y = 130)
+clearbutton.place(x=100, y = 150)
 
 
 

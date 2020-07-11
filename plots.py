@@ -10,8 +10,8 @@ from Calc import Calc
 class FunctionPlots:
     def __init__(self, c):
         self.c = c
-        figure = plt.figure()
-        self.ax = figure.add_subplot(111)
+        self.figure = plt.figure()
+        self.ax = self.figure.add_subplot(111)
         
         
     def newPlot(self, f, a, b, N):
@@ -19,6 +19,10 @@ class FunctionPlots:
         X = [a + w*i for i in range(N+1)]
         Y = [f(x) for x in X]
         self.ax.plot(X,Y)
+        plt.show(block = False)
+        
+    def clearPlot(self):
+        self.ax.cla()
         plt.show(block = False)
         
         

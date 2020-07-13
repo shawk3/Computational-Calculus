@@ -5,115 +5,113 @@
 # @author: shawk
 # """
 
-
-# # import tkinter
-# from Calc import Calc
-# from plots import FunctionPlots as plots
-
-# import tkinter as tk  
-# from functools import partial  
-   
-   
-# def call_result(label_result, n1, n2):  
-#     num1 = (n1.get())  
-#     num2 = (n2.get())  
-#     result = int(num1)+int(num2)  
-#     label_result.config(text="Result = %d" % result)  
-#     return  
-   
-# root = tk.Tk()  
-# root.geometry('400x200+100+200')  
-  
-# root.title('Calculator')  
-   
-# number1 = tk.StringVar()  
-# number2 = tk.StringVar()  
-  
-# labelNum1 = tk.Label(root, text="A").grid(row=1, column=0)  
-  
-# labelNum2 = tk.Label(root, text="B").grid(row=2, column=0)  
-  
-# labelResult = tk.Label(root)  
-  
-# labelResult.grid(row=7, column=2)  
-  
-# entryNum1 = tk.Entry(root, textvariable=number1).grid(row=1, column=2)  
-  
-# entryNum2 = tk.Entry(root, textvariable=number2).grid(row=2, column=2)  
-  
-# call_result = partial(call_result, labelResult, number1, number2)  
-  
-# buttonCal = tk.Button(root, text="Calculate", command=call_result).grid(row=3, column=0)  
-  
-# root.mainloop() 
-
-from tkinter import *
-from tkinter.ttk import *
+import tkinter as tk 
 from functools import partial 
-import matplotlib
-matplotlib.use("TkAgg")
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 from Calc import Calc
+from plots import FunctionPlots as fplt
+import numpy as np
 
 
-def Plot(s, a, b):
-    # plot.cla()
-    s = s.get()
-    def f(x):
-        return eval(s)
-    c = Calc(f)
-    
-    
-    
+def Plot(a, b, f):
     a = float(a.get())
     b = float(b.get())
-    N = 100
-    w = (b-a)/N
-    # print(f)
-    X = [a + w*i for i in range(N+1)]
-    Y = [c.f(x) for x in X]
-    plot.plot(X, Y)
-    plot.set_xlim(a,b)
-    canvas = FigureCanvasTkAgg(figure, root)
-    canvas.get_tk_widget().grid(row=0, column=2, rowspan = 4)
+    f(a, b)
     return
 
-def Clear():
-    plot.cla()
-    canvas = FigureCanvasTkAgg(figure, root)
-    canvas.get_tk_widget().grid(row=0, column=2, rowspan = 4)
+# def Plotfp(a, b):
+#     a = float(a.get())
+#     b = float(b.get())
+#     p.plotfp(a, b)
+#     return
 
-root = Tk()
+def updateCalcFunction(event):
+    s = event.widget.get()
+    def f(x):
+        return eval(s)
+    c.f = f
+    
+def clear():
+    p.clearPlot()
+    
+def bisection(resultlabel, a, b):
+    a = float(a.get())
+    b = float(b.get())
+    result = c.bisection(a,b)
+    resultlabel.config(text = "root: " + str(result))
+    
+def newton(resultlabel, x):
+    x = float(x.get())
+    result = c.newton(x)
+    resultlabel.config(text = "root: " + str(result))
+
+
+root = tk.Tk()
+root.geometry('250x350+100+200')
+c = Calc(lambda x: x)
+p = fplt(c)
+
+flabel = tk.Label(root, text = "Enter function")
+fentry = tk.Entry(root)
+fentry.bind("<FocusOut>", updateCalcFunction)
+# fentry.bind("<Enter>", updateCalcFunction)
+
+x1 = tk.StringVar()  
+x2 = tk.StringVar() 
+x1entry = tk.Entry(root, textvariable = x1, width = 10)
+x2entry = tk.Entry(root, textvariable = x2, width = 10)
+Plotf = partial(Plot, x1, x2, p.plotf)
+fbutton = tk.Button(root, text = "plot", command = Plotf)
+Plotfp = partial(Plot, x1, x2, p.plotfp)
+fpbutton = tk.Button(root, text = "plot derivative", command = Plotfp)
+PlotInt = partial(Plot, x1, x2, p.plotInt)
+intbutton = tk.Button(root, text = "plot integral", command = PlotInt)
+clearbutton = tk.Button(root, text = "Clear", command = clear)
+a = tk.StringVar()
+b = tk.StringVar()
+aentry = tk.Entry(root, textvariable = a, width = 10)
+bentry = tk.Entry(root, textvariable = b, width = 10)
+brootlabel = tk.Label(root, text = "root: ")
+bisect = partial(bisection, brootlabel, a, b)
+bisectbutton = tk.Button(root, text = "Run", command = bisect)
+x = tk.StringVar()
+xentry = tk.Entry(root, textvariable = x, width = 10)
+nrootlabel = tk.Label(root, text = "root: ")
+newt = partial(newton, nrootlabel, x)
+newtbutton = tk.Button(root, text = "Run", command = newt)
 
 
 
- 
-f = StringVar()
-a = StringVar()
-b = StringVar()
-ef = Entry(root, textvariable=f).grid(row = 1, column = 0)
-ea = Entry(root, textvariable=a).grid(row = 2, column = 0)
-eb = Entry(root, textvariable=b).grid(row = 2, column = 1)
-Plot = partial(Plot, f, a, b)
-
-l = Label(root, text = "Enter function").grid(row = 0, column = 0)
-
-b = Button(root, text = "plot", command = Plot).grid(row = 3, column = 0) 
-b = Button(root, text = "clear", command = Clear).grid(row = 3, column = 1)
 
 
-figure = Figure(figsize=(5, 4), dpi=100)
-plot = figure.add_subplot(1, 1, 1)
+# bisectbutton = tk.Button(root, text = B)
 
-# plot.plot(0.5, 0.3, color="red", marker="o", linestyle="")
 
-# X = [ 0.1, 0.2, 0.3 ]
-# Y = [ -0.1, -0.2, -0.3 ]
-# plot.plot(X, Y, color="blue", marker="x", linestyle="")
+flabel.place(x = 5, y = 5)
+fentry.place(x = 100, y = 5)
+tk.Label(root, text = "Xmin").place(x = 5, y = 45)
+x1entry.place(x = 45, y = 45)
+x2entry.place(x = 45, y = 65)
+tk.Label(root, text = "Xmax").place(x = 5, y = 65)
+fbutton.place(x = 180, y = 50)
+fpbutton.place(x = 10, y = 100)
+intbutton.place(x = 10, y = 130)
+clearbutton.place(x=180, y = 115)
+tk.Label(root, text = "Bisection Method: ").place(x = 10, y = 170)
+tk.Label(root, text = "Left Bound: ").place(x = 5, y = 190)
+tk.Label(root, text = "Right Bound: ").place(x = 5, y = 210)
+aentry.place(x = 85, y = 195)
+bentry.place(x = 85, y = 215)
+bisectbutton.place(x = 180, y = 205)
+brootlabel.place(x = 10, y = 235)
+tk.Label(root, text = "Newton's Method:").place(x=10, y = 260)
+tk.Label(root, text = "Initial Guess: ").place(x = 5, y = 280)
+xentry.place(x = 85, y = 280)
+newtbutton.place(x = 180, y = 280)
+nrootlabel.place(x = 10, y = 300)
 
-canvas = FigureCanvasTkAgg(figure, root)
-canvas.get_tk_widget().grid(row=0, column=2, rowspan = 4)
+
+
 
 
 

@@ -5,6 +5,15 @@
 # @author: shawk
 # """
 
+# from tkinter import *
+#from tkinter.ttk import *
+
+import matplotlib
+matplotlib.use("TkAgg")
+
+# from matplotlib.figure import Figure
+# from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 import tkinter as tk 
 from functools import partial 
 
@@ -47,7 +56,7 @@ def newton(resultlabel, x):
 
 
 root = tk.Tk()
-root.geometry('250x350+100+200')
+root.geometry('250x370+100+200')
 c = Calc(lambda x: x)
 p = fplt(c)
 
@@ -97,18 +106,18 @@ fbutton.place(x = 180, y = 50)
 fpbutton.place(x = 10, y = 100)
 intbutton.place(x = 10, y = 130)
 clearbutton.place(x=180, y = 115)
-tk.Label(root, text = "Bisection Method: ").place(x = 10, y = 170)
-tk.Label(root, text = "Left Bound: ").place(x = 5, y = 190)
-tk.Label(root, text = "Right Bound: ").place(x = 5, y = 210)
-aentry.place(x = 85, y = 195)
-bentry.place(x = 85, y = 215)
-bisectbutton.place(x = 180, y = 205)
-brootlabel.place(x = 10, y = 235)
-tk.Label(root, text = "Newton's Method:").place(x=10, y = 260)
-tk.Label(root, text = "Initial Guess: ").place(x = 5, y = 280)
-xentry.place(x = 85, y = 280)
-newtbutton.place(x = 180, y = 280)
-nrootlabel.place(x = 10, y = 300)
+tk.Label(root, text = "Bisection Method: ").place(x = 10, y = 175)
+tk.Label(root, text = "Left Bound: ").place(x = 5, y = 200)
+tk.Label(root, text = "Right Bound: ").place(x = 5, y = 220)
+aentry.place(x = 85, y = 200)
+bentry.place(x = 85, y = 220)
+bisectbutton.place(x = 180, y = 210)
+brootlabel.place(x = 20, y = 245)
+tk.Label(root, text = "Newton's Method:").place(x=10, y = 280)
+tk.Label(root, text = "Initial Guess: ").place(x = 5, y = 305)
+xentry.place(x = 85, y = 305)
+newtbutton.place(x = 180, y = 305)
+nrootlabel.place(x = 20, y = 330)
 
 
 
